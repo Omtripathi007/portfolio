@@ -604,11 +604,13 @@
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
+            pointer-events: none;
         }
 
         .contact-icons {
             display: flex;
             gap: 20px;
+            pointer-events: none;
         }
 
         .contact-icon {
@@ -624,6 +626,8 @@
             transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
+            pointer-events: auto;
+            z-index: 10;
         }
 
         .contact-icon:hover {
@@ -943,6 +947,7 @@
             transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
+            pointer-events: auto;
         }
 
         .mobile-contact-icon:hover {
@@ -1527,13 +1532,13 @@
             <div class="contact-door" id="contactDoor">
                 <div class="contact-label">Stay for <br>me....</div>
                 <div class="contact-icons">
-                    <a href="https://www.linkedin.com/feed/" target="_blank" class="contact-icon" title="LinkedIn">
+                    <a href="https://www.linkedin.com/in/om-tripathi-007/" target="_blank" class="contact-icon" title="LinkedIn" onclick="event.stopPropagation()">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="https://github.com/Omtripathi007" target="_blank" class="contact-icon" title="GitHub">
+                    <a href="https://github.com/Omtripathi007" target="_blank" class="contact-icon" title="GitHub" onclick="event.stopPropagation()">
                         <i class="fab fa-github"></i>
                     </a>
-                    <a href="mailto:om22092006@gmail.com" class="contact-icon" title="Email">
+                    <a href="mailto:om22092006@gmail.com" class="contact-icon" title="Email" onclick="event.stopPropagation()">
                         <i class="fas fa-envelope"></i>
                     </a>
                 </div>
@@ -1620,7 +1625,7 @@
     <!-- Mobile Contact Section -->
     <div class="mobile-contact">
         <div class="mobile-contact-icons">
-            <a href="https://www.linkedin.com/feed/" target="_blank" class="mobile-contact-icon" title="LinkedIn">
+            <a href="https://www.linkedin.com/in/om-tripathi-007/" target="_blank" class="mobile-contact-icon" title="LinkedIn">
                 <i class="fab fa-linkedin-in"></i>
             </a>
             <a href="https://github.com/Omtripathi007" target="_blank" class="mobile-contact-icon" title="GitHub">
@@ -1663,102 +1668,23 @@
     </div>
     
     <script>
-        // Mobile 3D Motion using Device Orientation
-        let hasOrientationPermission = false;
-        
-        function initMobile3DMotion() {
-            // Check if DeviceOrientationEvent is supported
-            if (window.DeviceOrientationEvent) {
-                // Check if we need to request permission (iOS 13+)
-                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    // Create a button to request permission
-                    const permissionButton = document.createElement('button');
-                    permissionButton.textContent = 'Enable 3D Motion';
-                    permissionButton.style.cssText = `
-                        position: fixed;
-                        top: 80px;
-                        right: 20px;
-                        z-index: 1002;
-                        padding: 10px 20px;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        border: none;
-                        border-radius: 25px;
-                        font-size: 14px;
-                        font-weight: bold;
-                        cursor: pointer;
-                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                        transition: all 0.3s;
-                    `;
-                    
-                    permissionButton.addEventListener('click', function() {
-                        DeviceOrientationEvent.requestPermission()
-                            .then(response => {
-                                if (response === 'granted') {
-                                    hasOrientationPermission = true;
-                                    permissionButton.style.display = 'none';
-                                    startOrientationTracking();
-                                }
-                            })
-                            .catch(console.error);
-                    });
-                    
-                    document.body.appendChild(permissionButton);
-                } else {
-                    // No permission needed, start tracking immediately
-                    hasOrientationPermission = true;
-                    startOrientationTracking();
-                }
-            }
-        }
-        
-        function startOrientationTracking() {
-            const sceneContainer = document.getElementById('sceneContainer');
-            let smoothingFactor = 0.3; // Smoothing for motion
-            
-            window.addEventListener('deviceorientation', function(event) {
-                if (!hasOrientationPermission) return;
-                
-                // Get device orientation values
-                let beta = event.beta;  // Front-to-back tilt in degrees (-180 to 180)
-                let gamma = event.gamma; // Left-to-right tilt in degrees (-90 to 90)
-                
-                // Clamp values to prevent extreme angles
-                beta = Math.max(-45, Math.min(45, beta));
-                gamma = Math.max(-45, Math.min(45, gamma));
-                
-                // Apply smoothing
-                const currentTransform = sceneContainer.style.transform || '';
-                const currentRotateX = parseFloat(currentTransform.match(/rotateX\(([^)]+)deg\)/)?.[1] || 0);
-                const currentRotateY = parseFloat(currentTransform.match(/rotateY\(([^)]+)deg\)/)?.[1] || 0);
-                
-                const smoothRotateX = currentRotateX + (beta - currentRotateX) * smoothingFactor;
-                const smoothRotateY = currentRotateY + (gamma - currentRotateY) * smoothingFactor;
-                
-                // Apply the 3D transformation
-                sceneContainer.style.transform = `
-                    rotateX(${-smoothRotateX}deg) 
-                    rotateY(${smoothRotateY}deg) 
-                    translateZ(-20px)
-                `;
-            });
-        }
-        
-        // Fallback: Touch-based 3D motion for devices without orientation support
-        function initTouch3DMotion() {
+        // Mobile swipe-based 3D motion
+        function initMobileSwipeMotion() {
             const sceneContainer = document.getElementById('sceneContainer');
             let touchStartX = 0;
             let touchStartY = 0;
             let currentX = 0;
             let currentY = 0;
+            let isSwiping = false;
             
             document.addEventListener('touchstart', function(e) {
                 touchStartX = e.touches[0].clientX;
                 touchStartY = e.touches[0].clientY;
-            });
+                isSwiping = true;
+            }, { passive: true });
             
             document.addEventListener('touchmove', function(e) {
-                if (!touchStartX || !touchStartY) return;
+                if (!isSwiping) return;
                 
                 const touchEndX = e.touches[0].clientX;
                 const touchEndY = e.touches[0].clientY;
@@ -1766,18 +1692,21 @@
                 const diffX = touchEndX - touchStartX;
                 const diffY = touchEndY - touchStartY;
                 
-                // Calculate rotation based on touch movement
-                currentX = Math.max(-30, Math.min(30, diffX * 0.1));
-                currentY = Math.max(-30, Math.min(30, diffY * 0.1));
+                // Calculate rotation based on swipe movement
+                currentX = Math.max(-30, Math.min(30, diffX * 0.15));
+                currentY = Math.max(-30, Math.min(30, diffY * 0.15));
                 
                 sceneContainer.style.transform = `
                     rotateX(${-currentY}deg) 
                     rotateY(${currentX}deg) 
                     translateZ(-20px)
                 `;
-            });
+            }, { passive: true });
             
             document.addEventListener('touchend', function() {
+                if (!isSwiping) return;
+                isSwiping = false;
+                
                 // Reset to center position with animation
                 sceneContainer.style.transform = `
                     rotateX(0deg) 
@@ -1786,7 +1715,7 @@
                 `;
                 currentX = 0;
                 currentY = 0;
-            });
+            }, { passive: true });
         }
         
         // Countdown Timer
@@ -1881,7 +1810,12 @@
             }
             
             // Event listeners for opening the modal
-            document.getElementById('contactDoor').addEventListener('click', openContactModal);
+            document.getElementById('contactDoor').addEventListener('click', function(e) {
+                // Check if click is on the door itself, not on the icons
+                if (e.target === this || e.target.classList.contains('contact-label')) {
+                    openContactModal();
+                }
+            });
             
             // Event listener for closing the modal
             closeForm.addEventListener('click', closeContactModal);
@@ -1962,6 +1896,9 @@
                     const section = this.getAttribute('title');
                     if (section === 'Contact') {
                         // Contact nav item opens the contact form
+                        const contactModal = document.getElementById('contactModal');
+                        contactModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
                         return;
                     }
                     showNotification('Coming Soon....');
@@ -1975,6 +1912,9 @@
                     const section = this.getAttribute('data-section');
                     if (section === 'Contact') {
                         // Contact nav item opens the contact form
+                        const contactModal = document.getElementById('contactModal');
+                        contactModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
                         return;
                     }
                     showNotification('Coming Soon....');
@@ -2063,10 +2003,9 @@
             initInteractions();
             initContactForm();
             
-            // Initialize mobile 3D motion
+            // Initialize mobile swipe motion
             if (window.innerWidth <= 768) {
-                initMobile3DMotion();
-                initTouch3DMotion(); // Fallback for devices without orientation support
+                initMobileSwipeMotion();
             }
             
             // Add subtle parallax effect on mouse move (desktop only)
