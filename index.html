@@ -27,6 +27,7 @@
             position: relative;
             transform-style: preserve-3d;
             animation: gentleCameraMotion 30s infinite alternate ease-in-out;
+            transition: transform 0.1s ease-out;
         }
 
         @keyframes gentleCameraMotion {
@@ -622,6 +623,7 @@
             font-size: 18px;
             transition: all 0.3s;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .contact-icon:hover {
@@ -735,6 +737,88 @@
         @keyframes fanRotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Countdown Timer */
+        .countdown-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            animation: float 6s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+            100% { transform: translateX(-50%) translateY(0px); }
+        }
+
+        .countdown-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 12px;
+            min-width: 70px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            animation: flip 8s infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(5deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        .countdown-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .countdown-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .countdown-message {
+            font-size: 16px;
+            color: #555;
+            font-style: italic;
         }
 
         /* Navigation */
@@ -858,11 +942,149 @@
             font-size: 18px;
             transition: all 0.3s;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .mobile-contact-icon:hover {
             background: rgba(0, 0, 0, 0.2);
             transform: scale(1.1);
+        }
+
+        /* Contact Form Modal */
+        .contact-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .contact-form-container {
+            background: linear-gradient(to bottom, #f8f4e6, #e8dfc9);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-modal.active .contact-form-container {
+            transform: translateY(0);
+        }
+
+        .close-form {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-form:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background: white;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .form-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            display: block;
+        }
+
+        .form-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #c62828;
+            display: block;
         }
 
         /* Responsive adjustments */
@@ -873,6 +1095,7 @@
             
             .scene-container {
                 animation: none;
+                transform: rotateX(0deg) rotateY(0deg) translateZ(0px);
             }
             
             .desk {
@@ -1015,6 +1238,50 @@
             
             .mobile-contact {
                 display: block;
+                bottom: 10px;
+                z-index: 1001;
+            }
+            
+            .contact-form-container {
+                padding: 20px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            /* Countdown Timer Mobile */
+            .countdown-container {
+                bottom: 70px;
+                width: 90%;
+                padding: 15px;
+                z-index: 1000;
+            }
+            
+            .countdown-title {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+            
+            .countdown {
+                gap: 8px;
+            }
+            
+            .countdown-item {
+                min-width: 55px;
+                padding: 8px;
+            }
+            
+            .countdown-value {
+                font-size: 24px;
+            }
+            
+            .countdown-label {
+                font-size: 10px;
+            }
+            
+            .countdown-message {
+                font-size: 14px;
             }
         }
 
@@ -1082,11 +1349,62 @@
                 width: 50px;
                 height: 12px;
             }
+            
+            .contact-form-container {
+                padding: 15px;
+            }
+            
+            .form-title {
+                font-size: 20px;
+            }
+            
+            /* Countdown Timer Small Mobile */
+            .countdown-container {
+                bottom: 70px;
+                padding: 12px;
+            }
+            
+            .countdown-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            
+            .countdown {
+                gap: 5px;
+            }
+            
+            .countdown-item {
+                min-width: 45px;
+                padding: 6px;
+            }
+            
+            .countdown-value {
+                font-size: 20px;
+            }
+            
+            .countdown-label {
+                font-size: 9px;
+            }
+            
+            .countdown-message {
+                font-size: 12px;
+            }
+            
+            .mobile-contact {
+                bottom: 10px;
+                padding: 8px 15px;
+            }
+            
+            .mobile-contact-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="scene-container">
+    <div class="scene-container" id="sceneContainer">
         <div class="room">
             <!-- Room Structure -->
             <div class="floor"></div>
@@ -1206,18 +1524,18 @@
             </div>
             
             <!-- Contact Door -->
-            <div class="contact-door">
-                <div class="contact-label">Contact</div>
+            <div class="contact-door" id="contactDoor">
+                <div class="contact-label">Stay for <br>me....</div>
                 <div class="contact-icons">
-                    <div class="contact-icon" title="LinkedIn">
+                    <a href="https://www.linkedin.com/feed/" target="_blank" class="contact-icon" title="LinkedIn">
                         <i class="fab fa-linkedin-in"></i>
-                    </div>
-                    <div class="contact-icon" title="GitHub">
+                    </a>
+                    <a href="https://github.com/Omtripathi007" target="_blank" class="contact-icon" title="GitHub">
                         <i class="fab fa-github"></i>
-                    </div>
-                    <div class="contact-icon" title="Email">
+                    </a>
+                    <a href="mailto:om22092006@gmail.com" class="contact-icon" title="Email">
                         <i class="fas fa-envelope"></i>
-                    </div>
+                    </a>
                 </div>
             </div>
             
@@ -1234,18 +1552,42 @@
         </div>
     </div>
     
+    <!-- Countdown Timer -->
+    <div class="countdown-container">
+        <h2 class="countdown-title">Portfolio Launching In</h2>
+        <div class="countdown">
+            <div class="countdown-item" style="--delay: 0s">
+                <span class="countdown-value" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item" style="--delay: 0.5s">
+                <span class="countdown-value" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item" style="--delay: 1s">
+                <span class="countdown-value" id="minutes">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-item" style="--delay: 1.5s">
+                <span class="countdown-value" id="seconds">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+        <p class="countdown-message">Something amazing is coming your way!</p>
+    </div>
+    
     <!-- Navigation Menu -->
     <div class="nav-menu">
-        <div class="nav-item" title="Home">
+        <div class="nav-item" title="Home" id="navHome">
             <i class="fas fa-home"></i>
         </div>
-        <div class="nav-item" title="About">
+        <div class="nav-item" title="About" id="navAbout">
             <i class="fas fa-user"></i>
         </div>
-        <div class="nav-item" title="Projects">
+        <div class="nav-item" title="Projects" id="navProjects">
             <i class="fas fa-folder"></i>
         </div>
-        <div class="nav-item" title="Contact">
+        <div class="nav-item" title="Contact" id="navContact">
             <i class="fas fa-envelope"></i>
         </div>
     </div>
@@ -1257,19 +1599,19 @@
     
     <!-- Mobile Navigation -->
     <div class="mobile-nav" id="mobileNav">
-        <div class="mobile-nav-item" data-section="Home">
+        <div class="mobile-nav-item" data-section="Home" id="mobileNavHome">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </div>
-        <div class="mobile-nav-item" data-section="About">
+        <div class="mobile-nav-item" data-section="About" id="mobileNavAbout">
             <i class="fas fa-user"></i>
             <span>About</span>
         </div>
-        <div class="mobile-nav-item" data-section="Projects">
+        <div class="mobile-nav-item" data-section="Projects" id="mobileNavProjects">
             <i class="fas fa-folder"></i>
             <span>Projects</span>
         </div>
-        <div class="mobile-nav-item" data-section="Contact">
+        <div class="mobile-nav-item" data-section="Contact" id="mobileNavContact">
             <i class="fas fa-envelope"></i>
             <span>Contact</span>
         </div>
@@ -1278,19 +1620,214 @@
     <!-- Mobile Contact Section -->
     <div class="mobile-contact">
         <div class="mobile-contact-icons">
-            <div class="mobile-contact-icon" title="LinkedIn">
+            <a href="https://www.linkedin.com/feed/" target="_blank" class="mobile-contact-icon" title="LinkedIn">
                 <i class="fab fa-linkedin-in"></i>
-            </div>
-            <div class="mobile-contact-icon" title="GitHub">
+            </a>
+            <a href="https://github.com/Omtripathi007" target="_blank" class="mobile-contact-icon" title="GitHub">
                 <i class="fab fa-github"></i>
-            </div>
-            <div class="mobile-contact-icon" title="Email">
+            </a>
+            <a href="mailto:om22092006@gmail.com" class="mobile-contact-icon" title="Email" id="mobileContactEmail">
                 <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Contact Form Modal -->
+    <div class="contact-modal" id="contactModal">
+        <div class="contact-form-container">
+            <div class="close-form" id="closeForm">
+                <i class="fas fa-times"></i>
             </div>
+            <h2 class="form-title">Get In Touch</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="form-submit">Send Message</button>
+                <div id="formMessage" class="form-message"></div>
+            </form>
         </div>
     </div>
     
     <script>
+        // Mobile 3D Motion using Device Orientation
+        let hasOrientationPermission = false;
+        
+        function initMobile3DMotion() {
+            // Check if DeviceOrientationEvent is supported
+            if (window.DeviceOrientationEvent) {
+                // Check if we need to request permission (iOS 13+)
+                if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    // Create a button to request permission
+                    const permissionButton = document.createElement('button');
+                    permissionButton.textContent = 'Enable 3D Motion';
+                    permissionButton.style.cssText = `
+                        position: fixed;
+                        top: 80px;
+                        right: 20px;
+                        z-index: 1002;
+                        padding: 10px 20px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 25px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                        transition: all 0.3s;
+                    `;
+                    
+                    permissionButton.addEventListener('click', function() {
+                        DeviceOrientationEvent.requestPermission()
+                            .then(response => {
+                                if (response === 'granted') {
+                                    hasOrientationPermission = true;
+                                    permissionButton.style.display = 'none';
+                                    startOrientationTracking();
+                                }
+                            })
+                            .catch(console.error);
+                    });
+                    
+                    document.body.appendChild(permissionButton);
+                } else {
+                    // No permission needed, start tracking immediately
+                    hasOrientationPermission = true;
+                    startOrientationTracking();
+                }
+            }
+        }
+        
+        function startOrientationTracking() {
+            const sceneContainer = document.getElementById('sceneContainer');
+            let smoothingFactor = 0.3; // Smoothing for motion
+            
+            window.addEventListener('deviceorientation', function(event) {
+                if (!hasOrientationPermission) return;
+                
+                // Get device orientation values
+                let beta = event.beta;  // Front-to-back tilt in degrees (-180 to 180)
+                let gamma = event.gamma; // Left-to-right tilt in degrees (-90 to 90)
+                
+                // Clamp values to prevent extreme angles
+                beta = Math.max(-45, Math.min(45, beta));
+                gamma = Math.max(-45, Math.min(45, gamma));
+                
+                // Apply smoothing
+                const currentTransform = sceneContainer.style.transform || '';
+                const currentRotateX = parseFloat(currentTransform.match(/rotateX\(([^)]+)deg\)/)?.[1] || 0);
+                const currentRotateY = parseFloat(currentTransform.match(/rotateY\(([^)]+)deg\)/)?.[1] || 0);
+                
+                const smoothRotateX = currentRotateX + (beta - currentRotateX) * smoothingFactor;
+                const smoothRotateY = currentRotateY + (gamma - currentRotateY) * smoothingFactor;
+                
+                // Apply the 3D transformation
+                sceneContainer.style.transform = `
+                    rotateX(${-smoothRotateX}deg) 
+                    rotateY(${smoothRotateY}deg) 
+                    translateZ(-20px)
+                `;
+            });
+        }
+        
+        // Fallback: Touch-based 3D motion for devices without orientation support
+        function initTouch3DMotion() {
+            const sceneContainer = document.getElementById('sceneContainer');
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (!touchStartX || !touchStartY) return;
+                
+                const touchEndX = e.touches[0].clientX;
+                const touchEndY = e.touches[0].clientY;
+                
+                const diffX = touchEndX - touchStartX;
+                const diffY = touchEndY - touchStartY;
+                
+                // Calculate rotation based on touch movement
+                currentX = Math.max(-30, Math.min(30, diffX * 0.1));
+                currentY = Math.max(-30, Math.min(30, diffY * 0.1));
+                
+                sceneContainer.style.transform = `
+                    rotateX(${-currentY}deg) 
+                    rotateY(${currentX}deg) 
+                    translateZ(-20px)
+                `;
+            });
+            
+            document.addEventListener('touchend', function() {
+                // Reset to center position with animation
+                sceneContainer.style.transform = `
+                    rotateX(0deg) 
+                    rotateY(0deg) 
+                    translateZ(-20px)
+                `;
+                currentX = 0;
+                currentY = 0;
+            });
+        }
+        
+        // Countdown Timer
+        function initCountdown() {
+            // Set the date we're counting down to (30 days from now)
+            const launchDate = new Date();
+            launchDate.setDate(launchDate.getDate() + 30);
+            
+            // Update the countdown every 1 second
+            const countdownInterval = setInterval(function() {
+                // Get today's date and time
+                const now = new Date().getTime();
+                
+                // Find the distance between now and the launch date
+                const distance = launchDate - now;
+                
+                // Time calculations for days, hours, minutes and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result in the elements
+                document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+                document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+                document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+                
+                // If the countdown is finished, display a message
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.querySelector(".countdown-title").innerText = "Portfolio Launched!";
+                    document.querySelector(".countdown-message").innerText = "Welcome to my digital universe!";
+                    document.getElementById("days").innerText = "00";
+                    document.getElementById("hours").innerText = "00";
+                    document.getElementById("minutes").innerText = "00";
+                    document.getElementById("seconds").innerText = "00";
+                }
+            }, 1000);
+        }
+        
         // Create dust particles
         function createDustParticles() {
             const dustContainer = document.getElementById('dustContainer');
@@ -1321,6 +1858,75 @@
             setInterval(nextSlide, 3000);
         }
         
+        // Contact form functionality
+        function initContactForm() {
+            const contactModal = document.getElementById('contactModal');
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('formMessage');
+            const closeForm = document.getElementById('closeForm');
+            
+            // Open contact modal
+            function openContactModal() {
+                contactModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Close contact modal
+            function closeContactModal() {
+                contactModal.classList.remove('active');
+                document.body.style.overflow = '';
+                formMessage.classList.remove('success', 'error');
+                formMessage.textContent = '';
+                contactForm.reset();
+            }
+            
+            // Event listeners for opening the modal
+            document.getElementById('contactDoor').addEventListener('click', openContactModal);
+            
+            // Event listener for closing the modal
+            closeForm.addEventListener('click', closeContactModal);
+            
+            // Close modal when clicking outside the form
+            contactModal.addEventListener('click', function(e) {
+                if (e.target === contactModal) {
+                    closeContactModal();
+                }
+            });
+            
+            // Handle form submission
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(contactForm);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const subject = formData.get('subject');
+                const message = formData.get('message');
+                
+                // Simple validation
+                if (!name || !email || !subject || !message) {
+                    formMessage.textContent = 'Please fill in all fields';
+                    formMessage.classList.add('error');
+                    return;
+                }
+                
+                // Simulate form submission (replace with actual form submission logic)
+                setTimeout(function() {
+                    formMessage.textContent = 'Thank you for your message! I\'ll get back to you soon.';
+                    formMessage.classList.add('success');
+                    
+                    // Reset form after successful submission
+                    setTimeout(function() {
+                        contactForm.reset();
+                        setTimeout(function() {
+                            closeContactModal();
+                        }, 2000);
+                    }, 1000);
+                }, 1000);
+            });
+        }
+        
         // Interactive elements
         function initInteractions() {
             // Book interactions
@@ -1332,12 +1938,12 @@
                 });
             });
             
-            // Contact icons
-            const contactIcons = document.querySelectorAll('.contact-icon, .mobile-contact-icon');
+            // Contact icons - exclude LinkedIn, GitHub, and Email from showing "Coming Soon"
+            const contactIcons = document.querySelectorAll('.contact-icon:not([title="LinkedIn"]):not([title="GitHub"]):not([title="Email"]), .mobile-contact-icon:not([title="LinkedIn"]):not([title="GitHub"]):not([title="Email"])');
             contactIcons.forEach(icon => {
-                icon.addEventListener('click', function() {
-                    const platform = this.getAttribute('title');
-                    showNotification(`Opening ${platform}...`);
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Coming Soon....');
                 });
             });
             
@@ -1354,7 +1960,11 @@
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const section = this.getAttribute('title');
-                    showNotification(`Navigating to ${section}...`);
+                    if (section === 'Contact') {
+                        // Contact nav item opens the contact form
+                        return;
+                    }
+                    showNotification('Coming Soon....');
                 });
             });
             
@@ -1363,7 +1973,11 @@
             mobileNavItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const section = this.getAttribute('data-section');
-                    showNotification(`Navigating to ${section}...`);
+                    if (section === 'Contact') {
+                        // Contact nav item opens the contact form
+                        return;
+                    }
+                    showNotification('Coming Soon....');
                     closeMobileNav();
                 });
             });
@@ -1443,9 +2057,17 @@
         
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
+            initCountdown();
             createDustParticles();
             initSlideshow();
             initInteractions();
+            initContactForm();
+            
+            // Initialize mobile 3D motion
+            if (window.innerWidth <= 768) {
+                initMobile3DMotion();
+                initTouch3DMotion(); // Fallback for devices without orientation support
+            }
             
             // Add subtle parallax effect on mouse move (desktop only)
             if (window.innerWidth > 768) {
