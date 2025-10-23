@@ -1668,56 +1668,6 @@
     </div>
     
     <script>
-        // Mobile swipe-based 3D motion
-        function initMobileSwipeMotion() {
-            const sceneContainer = document.getElementById('sceneContainer');
-            let touchStartX = 0;
-            let touchStartY = 0;
-            let currentX = 0;
-            let currentY = 0;
-            let isSwiping = false;
-            
-            document.addEventListener('touchstart', function(e) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                isSwiping = true;
-            }, { passive: true });
-            
-            document.addEventListener('touchmove', function(e) {
-                if (!isSwiping) return;
-                
-                const touchEndX = e.touches[0].clientX;
-                const touchEndY = e.touches[0].clientY;
-                
-                const diffX = touchEndX - touchStartX;
-                const diffY = touchEndY - touchStartY;
-                
-                // Calculate rotation based on swipe movement
-                currentX = Math.max(-30, Math.min(30, diffX * 0.15));
-                currentY = Math.max(-30, Math.min(30, diffY * 0.15));
-                
-                sceneContainer.style.transform = `
-                    rotateX(${-currentY}deg) 
-                    rotateY(${currentX}deg) 
-                    translateZ(-20px)
-                `;
-            }, { passive: true });
-            
-            document.addEventListener('touchend', function() {
-                if (!isSwiping) return;
-                isSwiping = false;
-                
-                // Reset to center position with animation
-                sceneContainer.style.transform = `
-                    rotateX(0deg) 
-                    rotateY(0deg) 
-                    translateZ(-20px)
-                `;
-                currentX = 0;
-                currentY = 0;
-            }, { passive: true });
-        }
-        
         // Countdown Timer
         function initCountdown() {
             // Set the date we're counting down to (30 days from now)
@@ -2002,11 +1952,6 @@
             initSlideshow();
             initInteractions();
             initContactForm();
-            
-            // Initialize mobile swipe motion
-            if (window.innerWidth <= 768) {
-                initMobileSwipeMotion();
-            }
             
             // Add subtle parallax effect on mouse move (desktop only)
             if (window.innerWidth > 768) {
