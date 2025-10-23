@@ -1770,12 +1770,15 @@
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // Get form data
-                const formData = new FormData(contactForm);
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const subject = formData.get('subject');
-                const message = formData.get('message');
+                // Get form data using the correct field IDs
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                
+                // Clear previous messages
+                formMessage.classList.remove('success', 'error');
+                formMessage.textContent = '';
                 
                 // Simple validation
                 if (!name || !email || !subject || !message) {
@@ -1784,8 +1787,26 @@
                     return;
                 }
                 
-                // Simulate form submission (replace with actual form submission logic)
-                setTimeout(function() {
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    formMessage.textContent = 'Please enter a valid email address';
+                    formMessage.classList.add('error');
+                    return;
+                }
+                
+                // Create a hidden iframe for form submission
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'hidden_iframe';
+                document.body.appendChild(iframe);
+                
+                // Set form target to the hidden iframe
+                contactForm.target = 'hidden_iframe';
+                
+                // Handle iframe load event (submission complete)
+                iframe.onload = function() {
+                    // Show success message
                     formMessage.textContent = 'Thank you for your message! I\'ll get back to you soon.';
                     formMessage.classList.add('success');
                     
@@ -1794,9 +1815,14 @@
                         contactForm.reset();
                         setTimeout(function() {
                             closeContactModal();
+                            // Remove the iframe
+                            document.body.removeChild(iframe);
                         }, 2000);
                     }, 1000);
-                }, 1000);
+                };
+                
+                // Submit the form
+                contactForm.submit();
             });
         }
         
